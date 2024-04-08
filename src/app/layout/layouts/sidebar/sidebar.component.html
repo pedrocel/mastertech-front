@@ -1,0 +1,56 @@
+<hubsd-loading-bar></hubsd-loading-bar>
+
+<hubsd-navigation
+  class="bg-app-bar border-color border-r print:hidden fixed"
+  [navigation]="navigation"
+  (hoveredEvent)="handleHovered($event)"
+>
+  <ng-container hubsdNavigationHeader>
+    <div class="flex items-center justify-center h-20 border-b border-color">
+      <img
+        class="hidden dark:block"
+        [ngClass]="!hovered ? 'w-full' : 'h-fit'"
+        [src]="
+          !hovered
+            ? 'assets/images/logo/logo-orange.png'
+            : 'assets/images/logo/logo-orange.png'
+        "
+        alt="Eficiência"
+      />
+      <img
+        class="block dark:hidden"
+        [ngClass]="!hovered ? 'w-full' : 'h-fit'"
+        [src]="
+          !hovered
+            ? 'assets/images/logo/logo-orange.png'
+            : 'assets/images/logo/logo-orange.png'
+        "
+        alt="Eficiência"
+      />
+    </div>
+  </ng-container>
+</hubsd-navigation>
+
+<div class="absolute pl-[70px] w-full h-full overflow-y-scroll">
+  <div class="flex flex-col flex-auto w-full min-w-0">
+    <div
+      class="relative flex flex-0 items-center w-full h-20 px-7 border-b border-color z-49 dark:shadow-none bg-app-bar print:hidden"
+    >
+      <div class="flex items-center pr-2 space-x-2">
+        <h2 class="font-semibold text-lg flex flex-col">
+          {{ title }}
+          <span class="font-normal text-sm" *ngIf="companyTitle">{{
+            companyTitle
+          }}</span>
+        </h2>
+      </div>
+      <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+        <user></user>
+      </div>
+    </div>
+
+    <div class="flex flex-col flex-auto">
+      <router-outlet *ngIf="true"></router-outlet>
+    </div>
+  </div>
+</div>

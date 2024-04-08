@@ -1,0 +1,33 @@
+.slide-animation-next {
+  animation: slideAnimationNext 0.7s ease-in-out;
+}
+
+.slide-animation-prev {
+  animation: slideAnimationPrev 0.7s ease-in-out;
+}
+
+@keyframes slideAnimationNext {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideAnimationPrev {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+landing {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}

@@ -1,0 +1,92 @@
+<section class="p-4 sm:p-16 md:p-16 lg:p-16 xl:p-16">
+  <div
+    class="grid lg:grid-cols-2 md:grid-flow-row md:auto-rows-max max-w-screen-xl px-4 py-8 mx-auto gap-4"
+  >
+    <div >
+      <h2
+        class="font-bold max-w-full text-xl tracking-tight leading-none md:text-2xl xl:text-3xl break-keep mb-4"
+      >
+        Faça seu cadastro
+      </h2>
+
+      <div
+        class="max-w-full text-xl tracking-tight leading-none md:text-2xl xl:text-3xl space-x-6"
+      >
+        <mat-radio-button value="auto" [color]="'primary'"
+          >Pessoa Física</mat-radio-button
+        >
+        <mat-radio-button value="auto" [color]="'primary'" checked="true"
+          >Pessoa Jurídica</mat-radio-button
+        >
+      </div>
+
+      <div
+        class="flex max-w-full text-xl tracking-tight leading-none md:text-2xl xl:text-3xl break-keep"
+      >
+        <form [formGroup]="contactForm" class="mt-8 w-full">
+          <div class="flex flex-col md:flex-row md:space-x-8 break-keep">
+            <div class="w-full">
+              <mat-form-field class="w-full">
+                <mat-label>CNPJ</mat-label>
+                <input
+                  id="cnpj"
+                  placeholder="00.000.000/0000-00"
+                  formControlName="cnpj"
+                  matInput
+                />
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Telefone</mat-label>
+                <input id="phone" placeholder="(82) 9 5555-5555"
+                formControlName="phone"
+                matInput />
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Senha</mat-label>
+                <input id="" type="password" placeholder="BR!@3456"
+                formControlName="password"
+                matInput />
+              </mat-form-field>
+            </div>
+
+            <div class="w-full">
+              <mat-form-field class="w-full">
+                <mat-label>Razão Social</mat-label>
+                <input
+                  id="reason"
+                  placeholder="Serviço Nacional de Aprendizagem"
+                  formControlName="reason"
+                  matInput
+                />
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>E-mail</mat-label>
+                <input
+                  id="email"
+                  placeholder="contato@al.senai.br"
+                  formControlName="email"
+                  matInput
+                />
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Confirmar senha</mat-label>
+                <input id="" type="password" placeholder="BR!@3456"
+                formControlName="confirmPassword"
+                matInput />
+              </mat-form-field>
+            </div>
+          </div>
+          <button class="w-full mt-6" mat-flat-button color="primary">
+            <span>Cadastrar</span>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="sm:hidden lg:block bg-contact-image bg-auto bg-no-repeat bg-right w-full h-full">
+  </div>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+<div class="hubsd-navigation">
+  <div class="hubsd-navigation-container">
+    <div class="hubsd-navigation-header">
+      <ng-content select="[hubsdNavigationHeader]"></ng-content>
+    </div>
+    <div class="hubsd-navigation-content">
+      <ng-container *ngFor="let item of navigation; trackBy: trackByFn">
+        <hubsd-navigation-item [item]="item" [hovered]="hovered"></hubsd-navigation-item>
+      </ng-container>
+    </div>
+  </div>
+  <hubsd-navigation-switcher-mode [hovered]="hovered"></hubsd-navigation-switcher-mode>
+</div>

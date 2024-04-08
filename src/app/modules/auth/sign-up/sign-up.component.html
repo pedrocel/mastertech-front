@@ -1,0 +1,343 @@
+<div
+  *ngIf="showStep1; else step2"
+  class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0"
+>
+  <div
+    class="md:flex md:items-center md:justify-center w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
+  >
+    <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+      <div class="w-48">
+        <img
+          class="block dark:hidden"
+          src="assets/images/logo/logo-white.png"
+          alt="Logo eficiência"
+        />
+        <img
+          class="hidden dark:block"
+          src="assets/images/logo/logo-white.png"
+          alt="Logo eficiência"
+        />
+      </div>
+
+      <div
+        class="mt-8 text-lg font-bold tracking-tight leading-tight dark:text-low-pure"
+      >
+        Cadastre-se
+      </div>
+      <div class="flex items-baseline mt-0.5 font-medium text-low-medium">
+        <div class="text-md font-normal">
+          Informe seus dados e crie sua conta.
+        </div>
+      </div>
+
+      <div class="flex items-baseline mt-6 font-medium justify-between pr-2">
+        <mat-radio-button value="auto" [color]="'primary'"
+          >Pessoa Física</mat-radio-button
+        >
+        <mat-radio-button class="mr-2" value="auto" [color]="'primary'"
+          >Pessoa Jurídica</mat-radio-button
+        >
+      </div>
+
+      <form class="mt-8" #signUpNgForm="ngForm" [formGroup]="signUpForm">
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">E-mail</mat-label>
+          <input
+            id="email"
+            placeholder="email@eficiencia.al.senai.br"
+            formControlName="email"
+            matInput
+          />
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">CNPJ</mat-label>
+          <input
+            id="cnpj"
+            placeholder="00.000.000/0000-00"
+            formControlName="cnpj"
+            matInput
+          />
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Razão Social</mat-label>
+          <input
+            id="reason"
+            placeholder="Nome da Empresa"
+            formControlName="reason"
+            matInput
+          />
+        </mat-form-field>
+
+        <button
+          class="w-full mt-6"
+          mat-flat-button
+          color="primary"
+          [disabled]="signUpForm.invalid"
+          (click)="showStep2()"
+        >
+          <span>Próxima</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="flex flex-col relative hidden md:flex flex-auto items-center justify-center h-full pt-16 pl-16 pr-16 lg:px-28 overflow-hidden dark:border-r"
+  >
+    <div class="flex flex-col grow justify-center w-full max-w-2xl space-y-6">
+      <div class="flex z-10 relative w-full max-w-2xl mb-9">
+        <div class="border-b-4 border-black-300 w-6/12 mr-2 pb-2">
+          <span class="font-bold"
+            >Etapa 1<mat-icon class="text-primary text-sm">done</mat-icon></span
+          >
+        </div>
+        <div class="border-b-4 border-black-500 w-6/12 ml-2">
+          <span class="font-bold"
+            >Etapa 2<mat-icon class="text-primary text-sm">done</mat-icon></span
+          >
+        </div>
+      </div>
+      <div class="flex flex-row">
+        <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+        </mat-checkbox>
+        <div>
+          <p class="font-bold">Seu e-mail</p>
+          <p>Informe seu e-mail, por favor.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-row">
+        <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+        </mat-checkbox>
+        <div>
+          <p class="font-bold">CNPJ</p>
+          <p>Informe o CNPJ da sua empresa para ...</p>
+        </div>
+      </div>
+
+      <div class="flex flex-row">
+        <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+        </mat-checkbox>
+        <div>
+          <p class="font-bold">Razão Social</p>
+          <p>Informe a Razão Social da sua empresa para ...</p>
+        </div>
+      </div>
+
+      <div class="flex flex-row">
+        <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+        </mat-checkbox>
+        <div>
+          <p class="font-bold">Seu telefone</p>
+          <p>Informe um meio de contato válido.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-row">
+        <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+        </mat-checkbox>
+        <div>
+          <p class="font-bold">Crie uma senha</p>
+          <p>
+            Utilize números, símbolos, letras maiúsculas e <br />
+            minúsculas para criar uma senha forte e segura.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-row">
+        <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+        </mat-checkbox>
+        <div>
+          <p class="font-bold">Termos de serviço e Política de privacidade</p>
+          <p>Informe seu e-mail, por favor.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex w-full text-primary p-8 space-x-4 justify-end">
+      <a [routerLink]="['/']" class="underline font-bold">Termos de serviço</a>
+      <a [routerLink]="['/']" class="underline font-bold"
+        >Política de privacidade</a
+      >
+      <a [routerLink]="['/']" class="underline font-bold">Ajuda</a>
+    </div>
+  </div>
+</div>
+
+<ng-template #step2>
+  <div
+    class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0"
+  >
+    <div
+      class="md:flex md:items-center md:justify-center w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
+    >
+      <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+        <div class="w-48">
+          <img
+            class="block dark:hidden"
+            src="assets/images/logo/logo-white.png"
+            alt="Logo eficiência"
+          />
+          <img
+            class="hidden dark:block"
+            src="assets/images/logo/logo-white.png"
+            alt="Logo eficiência"
+          />
+        </div>
+
+        <div class="mt-8 text-lg font-bold tracking-tight leading-tight">
+          Cadastre-se
+        </div>
+        <div class="flex items-baseline mt-0.5 font-medium">
+          <div class="text-md font-normal">
+            Informe seus dados e crie sua conta.
+          </div>
+        </div>
+
+        <div class="flex items-baseline mt-6 font-medium justify-between pr-2">
+          <mat-radio-button value="auto" [color]="'primary'"
+            >Pessoa Física</mat-radio-button
+          >
+          <mat-radio-button class="mr-2" value="auto" [color]="'primary'"
+            >Pessoa Jurídica</mat-radio-button
+          >
+        </div>
+
+        <form [formGroup]="signUpForm2" class="mt-8">
+          <mat-form-field class="w-full">
+            <mat-label class="font-bold">Telefone</mat-label>
+            <input id="phone" placeholder="(00) 0 0000-0000" matInput />
+          </mat-form-field>
+
+          <mat-form-field class="w-full">
+            <mat-label class="font-bold">Senha</mat-label>
+            <input type="password" placeholder="Senha123@" matInput />
+          </mat-form-field>
+
+          <mat-form-field class="w-full">
+            <mat-label class="font-bold">Confirmar senha</mat-label>
+            <input type="password" placeholder="Senha123@" matInput />
+          </mat-form-field>
+
+          <div class="inline-flex items-center justify-between w-full mt-1.5">
+            <mat-checkbox class="-ml-2" [color]="'primary'">
+              Aceito os
+              <a [routerLink]="['/']" class="text-primary underline"
+                >Termos de serviço</a
+              >
+              e
+              <a [routerLink]="['/']" class="text-primary underline"
+                >Política de <br />
+                privacidade</a
+              >
+            </mat-checkbox>
+          </div>
+
+          <button
+            class="w-full mt-6"
+            mat-flat-button
+            color="primary"
+            [disabled]="signUpForm2.invalid"
+          >
+            <span>Criar minha conta</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-col relative hidden md:flex flex-auto items-center justify-center h-full pt-16 pl-16 pr-16 lg:px-28 overflow-hidden dark:border-r"
+    >
+      <div
+        class="flex flex-col grow justify-center w-full max-w-2xl space-y-6 mb-14"
+      >
+        <div class="flex z-10 relative w-full max-w-2xl mb-9">
+          <div class="border-b-4 border-black-300 w-6/12 mr-2 pb-2">
+            <span class="font-bold"
+              >Etapa 1<mat-icon class="text-primary text-sm"
+                >done</mat-icon
+              ></span
+            >
+          </div>
+          <div class="border-b-4 border-black-500 w-6/12 ml-2">
+            <span class="font-bold"
+              >Etapa 2<mat-icon class="text-primary text-sm"
+                >done</mat-icon
+              ></span
+            >
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+          </mat-checkbox>
+          <div>
+            <p class="font-bold">Seu e-mail</p>
+            <p>Informe seu e-mail, por favor.</p>
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+          </mat-checkbox>
+          <div>
+            <p class="font-bold">CNPJ</p>
+            <p>Informe o CNPJ da sua empresa para ...</p>
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+          </mat-checkbox>
+          <div>
+            <p class="font-bold">Razão Social</p>
+            <p>Informe a Razão Social da sua empresa para ...</p>
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+          </mat-checkbox>
+          <div>
+            <p class="font-bold">Seu telefone</p>
+            <p>Informe um meio de contato válido.</p>
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+          </mat-checkbox>
+          <div>
+            <p class="font-bold">Crie uma senha</p>
+            <p>
+              Utilize números, símbolos, letras maiúsculas e <br />
+              minúsculas para criar uma senha forte e segura.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <mat-checkbox class="step-checkbox" disableRipple [color]="'primary'">
+          </mat-checkbox>
+          <div>
+            <p class="font-bold">Termos de serviço e Política de privacidade</p>
+            <p>Informe seu e-mail, por favor.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex w-full text-primary p-8 space-x-4 justify-end">
+        <a [routerLink]="['/']" class="underline font-bold"
+          >Termos de serviço</a
+        >
+        <a [routerLink]="['/']" class="underline font-bold"
+          >Política de privacidade</a
+        >
+        <a [routerLink]="['/']" class="underline font-bold">Ajuda</a>
+      </div>
+    </div>
+  </div>
+</ng-template>

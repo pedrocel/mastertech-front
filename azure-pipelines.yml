@@ -1,0 +1,165 @@
+trigger:
+  branches:
+    include:
+      - hml
+
+variables:
+  - name: isHml
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/hml')]
+  - name: isPR
+    value: $[eq(variables['Build.Reason'], 'PullRequest')]
+  - name: TgtBranch
+    value: $[eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/hml')]
+  - name: sonarProjectKey
+    value: 'Energias-Front'
+
+stages:
+- stage: UnitTests
+  condition: and(eq(variables.isPR, 'True'), eq(variables.TgtBranch, 'True'))
+  jobs:
+  - job: UnitTest
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '18.x'
+    - script: |
+        npm install
+      displayName: 'npm install'
+    - script: |
+        npx ng test --browsers ChromeHeadless --watch=false
+      displayName: 'npm run test'
+    # - task: PublishFrontTestResults@2
+    #   displayName: 'verify junit folder'
+    #   condition: succeededOrFailed()
+    #   inputs:
+    #     testResultsFormat: 'JUnit'
+    #     testResultsFiles: '$(System.DefaultWorkingDirectory)/junit/TESTS-*.xml'
+    #     searchFolder: '$(System.DefaultWorkingDirectory)/junit'
+    #     testRunTitle: 'frontend tests'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
+        searchFolder: '$(System.DefaultWorkingDirectory)/junit'
+        failTaskOnFailedTests: true
+        testRunTitle: 'frontend tests'
+
+- stage: LintTests
+  condition: and(eq(variables.isPR, 'True'), eq(variables.TgtBranch, 'True'), succeeded('UnitTests'))
+  jobs:
+  - job: LintTest
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '18.x'
+    - script: |
+        npm install
+      displayName: 'npm install'
+    - script: |
+        npm run lint
+      displayName: 'npm run lint'
+
+- stage: DependencyCheckTest
+  condition: eq(variables.isHml, 'True')
+  jobs:
+  - job: DependencyCheck
+    pool:
+      name: build
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '18.x'
+    - script: |
+        npm install
+      displayName: 'npm install'
+    - task: dependency-check-build-task@6
+      displayName: 'Dependency Check Test'
+      inputs:
+        projectName: 'Produtiva-API'
+        scanPath: './**'
+        format: 'JUNIT'
+        failOnCVSS: '8'
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/dependency-check*.xml'
+        searchFolder: '$(Common.TestResultsDirectory)'
+        testRunTitle: 'Dependency Check'
+      condition: succeededOrFailed()
+
+- stage: SonarqubeTest
+  condition: and(succeeded('DependencyCheckTest'), eq(variables.isHml, 'True'))
+  jobs:
+  - job: RunSonarScanner
+    pool:
+      name: build
+    steps:
+    - task: Bash@3
+      displayName: 'Running sonarqube scanner'
+      inputs:
+        targetType: 'inline'
+        script: |
+          docker run --rm -e SONAR_HOST_URL="https://sonar.al.senai.br" -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=$(sonarProjectKey)" -e SONAR_LOGIN="$(SONAR_TOKEN)" -v "$PWD:/usr/src" sonarsource/sonar-scanner-cli:4.8
+          docker run --rm -v "$PWD:/usr/src" sonarsource/sonar-scanner-cli:4.8 chmod -R 777 .scannerwork
+    - task: Bash@3
+      displayName: 'Checking sonarqube scanner'
+      inputs:
+        targetType: 'inline'
+        script: |
+          export sonar_status="$(curl -u $(SONAR_TOKEN): -G --data-urlencode "branch=hml" --data-urlencode "projectKey=$(sonarProjectKey)" https://sonar.al.senai.br/api/qualitygates/project_status | jq -r .projectStatus.status)"
+          echo $sonar_status
+          if [ "$sonar_status" == "OK" ]
+          then
+            echo 'Quality Gate Succeeded'
+          else
+            echo 'Quality Gate Failed'
+            exit 1
+          fi
+
+- stage: Build_Hml_Front
+  condition: and(succeeded('SonarqubeTest'), eq(variables.isHml, 'True'))
+  jobs:
+  - job: BuildAndPushImage
+    pool:
+      name: build
+    steps:
+    - task: Docker@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        containerRegistry: 'registryPrivate'
+        repository: '$(System.TeamProject)/$(Build.Repository.Name)'
+        Dockerfile: '$(Build.SourcesDirectory)/ci/Dockerfile'
+        buildContext:
+    - task: Docker@2
+      displayName: Push
+      retryCountOnTaskFailure: 3
+      inputs:
+        command: 'push'
+        containerregistrytype: 'Docker Registry'
+        containerRegistry: 'registryPrivate'
+        repository: '$(System.TeamProject)/$(Build.Repository.Name)'
+        tags: '$(Build.BuildId)'
+
+- stage: UpdateInfraRepository
+  condition: and(succeeded('Build_Hml_Front'), eq(variables.isHml, 'True'))
+  jobs:
+  - job: ChangeImageTag
+    pool: k8s-master
+    steps:
+    - checkout: none
+    - task: Bash@3
+      inputs:
+        workingDirectory: /home/user/projects/energias/infra
+        targetType: 'inline'
+        script: |
+          git switch hml
+          git pull https://$(GIT_TOKEN)@dev.azure.com/hubsd/Energias/_git/infra hml
+          sed -i "s/image:\ registry\.al\.senai\.br\/energias\/front.*/image:\ registry\.al\.senai\.br\/energias\/front:$(Build.BuildID)/g" manifests/manifest.yaml
+          git add .
+          git commit -m 'Update Front image to Tag: $(Build.BuildID)'
+          git push https://$(GIT_TOKEN)@dev.azure.com/hubsd/Energias/_git/infra

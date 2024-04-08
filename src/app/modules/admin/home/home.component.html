@@ -1,0 +1,45 @@
+<div class="w-full p-6">
+  <div class="block">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        class="flex relative flex-row bg-card rounded-md overflow-hidden border dark:border-slate-800"
+        *ngFor="let item of summary"
+      >
+        <div class="flex flex-col p-6 flex-auto">
+          <div class="flex items-start justify-between">
+            <div class="text-md font-semibold tracking-tight leading-6 truncate">
+              {{ item.name }}
+            </div>
+          </div>
+          <div class="flex items-center mt-1">
+            <div class="flex flex-col">
+              <div class="text-xl font-bold tracking-tight leading-tight">
+                {{ item.value }}
+              </div>
+              <div
+                class="font-semibold text-sm mt-1 text-slate-500 leading-none whitespace-nowrap"
+              >
+                <span [ngClass]="item.subtitleValue.includes('+') ? 'text-primary-500' : 'text-red-500'">{{ item.subtitleValue }}</span>
+                {{ item.subtitle }}
+              </div>
+            </div>
+          </div>
+          <div class="absolute bottom-0 right-px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="178" height="115" viewBox="0 0 178 115" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M104 208C161.438 208 208 161.438 208 104C208 46.5624 161.438 0 104 0C46.5624 0 0 46.5624 0 104C0 161.438 46.5624 208 104 208ZM104 173.133C142.181 173.133 173.133 142.181 173.133 104C173.133 65.8189 142.181 34.8671 104 34.8671C65.8189 34.8671 34.8671 65.8189 34.8671 104C34.8671 142.181 65.8189 173.133 104 173.133Z" class="dark:opacity-80" [attr.fill]="item.ringColor"/>
+            </svg>
+          </div>
+        </div>
+        <button class="bg-card px-6 z-20 h-full border-l dark:border-slate-800 flex justify-center items-center">
+          <mat-icon [svgIcon]="'mat_outline:chevron_right'"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="mt-6">
+      <hubsd-table *ngIf="reports.length > 0" class="w-full" [config]="config" [data]="reports">
+      </hubsd-table>
+    </div>
+  </div>
+</div>

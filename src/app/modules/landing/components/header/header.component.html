@@ -1,0 +1,88 @@
+
+
+  <header
+  class="bg-black bg-opacity-30 bg-blend-multiply fixed w-full top-0 z-50"
+>
+  <nav
+    class="max-w-screen-xl mx-auto flex items-center justify-between p-6 lg:px-8"
+    aria-label="Global"
+  >
+    <div class="flex lg:flex-1">
+      <a href="#" class="w-48 -m-1.5 p-1.5">
+        <span class="sr-only">Eficiências</span>
+        <img
+          ngSrc="assets/images/logo/logo-white.png"
+          alt="Eficiências"
+          height="30"
+          width="205"
+        />
+      </a>
+    </div>
+    <div class="hidden lg:flex lg:gap-x-12">
+      <a
+        href="#"
+        class="text-sm font-semibold leading-6 text-gray-50 hover:underline"
+        >Início</a
+      >
+      <a
+        href="#"
+        class="text-sm font-semibold leading-6 text-gray-50 hover:underline"
+        >Produtos</a
+      >
+      <a
+        href="#"
+        class="text-sm font-semibold leading-6 text-gray-50 hover:underline"
+        >Notícias</a
+      >
+    </div>
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+      <button
+        class="text-sm dark:bg-white font-semibold mr-4 leading-6 px-8 text-gray-950"
+        mat-flat-button
+        [routerLink]="['/registrar']"
+      >
+        <span> Cadastre-se </span>
+      </button>
+      <button
+        class="text-sm font-semibold leading-6 px-8 text-gray-50"
+        mat-flat-button
+        color="primary"
+        [routerLink]="['/login']"
+      >
+        <span> Login <span aria-hidden="true">&rarr;</span> </span>
+      </button>
+    </div>
+
+    <button mat-button class="lg:hidden" [matMenuTriggerFor]="menu">
+      <mat-icon class="text-white text-lg">menu</mat-icon>
+      <mat-menu #menu="matMenu" class="lg:hidden dark:bg-default">
+        <button mat-menu-item class="justify-center">
+          <a href="#" class="text-sm font-semibold leading-6">Início</a>
+        </button>
+        <button mat-menu-item class="justify-center ">
+          <a href="#" class="text-sm font-semibold leading-6 text-black dark:text-white">Produtos</a>
+        </button>
+        <button mat-menu-item class="justify-center">
+          <a href="#" class="text-sm font-semibold leading-6">Notícias</a>
+        </button>
+
+        <div class="border-t border-primary">
+          <button
+            class="text-sm font-semibold leading-6 text-gray-950 justify-center dark:text-white"
+            mat-menu-item
+            [routerLink]="['/registrar']"
+          >
+            <a> Cadastre-se </a>
+          </button>
+          <button
+            class="text-sm font-semibold leading-6 text-gray-50 bg-primary justify-center"
+            mat-menu-item
+            [routerLink]="['/login']"
+          >
+            <a> Login <span aria-hidden="true">&rarr;</span> </a>
+          </button>
+        </div>
+      </mat-menu>
+    </button>
+  </nav>
+</header>
